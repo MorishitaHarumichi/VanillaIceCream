@@ -2,11 +2,11 @@ package com.example.acceleration.screen
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ImageView
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
@@ -14,8 +14,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
 import com.example.acceleration.R
 import com.example.acceleration.ui.theme.AccelerationTheme
@@ -40,20 +40,26 @@ class FlashScreen : AppCompatActivity() {
     fun FlashScreenContent(onBack: () -> Unit) {
         Box(
             modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.TopStart // 矢印を左上に配置
+            contentAlignment = Alignment.Center
         ) {
-            // 戻るボタン
-            IconButton(onClick = onBack) {
+            // 戻るボタンを手前に表示
+            IconButton(
+                onClick = onBack,
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .size(48.dp)
+            ) {
                 Icon(Icons.Filled.ArrowBack, contentDescription = "戻る")
             }
 
-            // CoilでGIFを表示
+            // CoilでGIFを表示（サイズを少し小さくする）
             val painter = rememberAsyncImagePainter(
                 model = ImageRequest.Builder(context = this@FlashScreen)
-                    .data(R.raw.androidcompactfacesad)  // GIFのリソースID
+                    .data(R.raw.androidcompactfacesad)
                     .build()
             )
 
+            // 画像のサイズを指定して表示
             androidx.compose.foundation.Image(
                 painter = painter,
                 contentDescription = "GIF",
