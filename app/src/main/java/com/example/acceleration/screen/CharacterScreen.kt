@@ -51,6 +51,7 @@ class CharacterScreen : AppCompatActivity() {
                 onClick = {
                     val intent = Intent(this@CharacterScreen, HomeScreen::class.java)
                     startActivity(intent)
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
                     finish()
                 },
                 modifier = Modifier.align(Alignment.TopStart)

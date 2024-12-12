@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.acceleration.R
 import com.example.acceleration.ui.theme.AccelerationTheme
 
 class HomeScreen : AppCompatActivity() {
@@ -24,10 +25,12 @@ class HomeScreen : AppCompatActivity() {
                     onNavigateToFlashScreen = {
                         val intent = Intent(this, FlashScreen::class.java)
                         startActivity(intent)
+                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out) // アニメーションを適用
                     },
                     onNavigateToCharacterScreen = {
                         val intent = Intent(this, CharacterScreen::class.java)
                         startActivity(intent)
+                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out) // アニメーションを適用
                     }
                 )
             }

@@ -51,7 +51,7 @@ class AccelerometerWorker(context: Context, workerParams: WorkerParameters) : Wo
             // 加速度データをログに出力
             val z = event.values[2]
 
-            if (z < -9.0) {
+            if (z < -4.5) {
                 Log.d("Accelerometer", "z: $z, Sending notification!")
 
                 // 通知の送信
