@@ -20,16 +20,18 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.Alignment
-import android.content.SharedPreferences
+import androidx.compose.ui.res.painterResource
 import com.example.acceleration.R
 import com.example.acceleration.ui.theme.AccelerationTheme
 
 class CharacterScreen : AppCompatActivity() {
 
     private var selectedImageId: Int? = null
+    private var selectedSoundId: Int? = null  // 音声ID
+    private var selectedVideoId: Int? = null  // 動画IDを追加
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +46,18 @@ class CharacterScreen : AppCompatActivity() {
     fun CharacterScreenContent() {
         val showDialog = remember { mutableStateOf(false) }
         val confirmAction = remember { mutableStateOf({}) }
+
+        // SharedPreferencesから選択されたコンテンツを読み込む
+        val savedImageId = remember { getSelectedImageFromPreferences() }
+        val savedSoundId = remember { getSelectedSoundFromPreferences() }
+        val savedVideoId = remember { getSelectedVideoFromPreferences() }
+
+        // LaunchedEffectで選択された設定を即時反映
+        LaunchedEffect(savedImageId, savedSoundId, savedVideoId) {
+            selectedImageId = savedImageId
+            selectedSoundId = savedSoundId
+            selectedVideoId = savedVideoId
+        }
 
         Box(modifier = Modifier.fillMaxSize()) {
             // 戻るボタン（左上に配置）
@@ -64,66 +78,80 @@ class CharacterScreen : AppCompatActivity() {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                // 画像をタップ可能にし、選択された画像のIDを記録
+                // 画像と音声のセット
                 Image(
-                    painter = painterResource(id = R.drawable.character1),
+                    painter = painterResource(id = R.drawable.character1), // CharacterScreenで表示される画像
                     contentDescription = "Character 1",
                     modifier = Modifier.clickable {
-                        selectedImageId = R.drawable.character1
+                        selectedImageId = R.drawable.character1 //画像
+                        selectedSoundId = R.raw.a_n //音声
+                        selectedVideoId = null // 動画(このイメージでは使用しない)
                         showDialog.value = true
                         confirmAction.value = {
-                            // 「はい」を選択した場合、画像IDだけを保存
-                            saveSelectedImage(selectedImageId)
+                            saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId)
                             showDialog.value = false
                         }
                     }
                 )
+
                 Image(
                     painter = painterResource(id = R.drawable.character2),
                     contentDescription = "Character 2",
                     modifier = Modifier.clickable {
                         selectedImageId = R.drawable.character2
+                        selectedSoundId = R.raw.deeeen
+                        selectedVideoId = null
                         showDialog.value = true
                         confirmAction.value = {
-                            // 「はい」を選択した場合、画像IDだけを保存
-                            saveSelectedImage(selectedImageId)
+                            saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId)
                             showDialog.value = false
                         }
                     }
                 )
+
                 Image(
                     painter = painterResource(id = R.drawable.character3),
                     contentDescription = "Character 3",
                     modifier = Modifier.clickable {
                         selectedImageId = R.drawable.character3
+                        selectedSoundId = R.raw.one_up
+                        selectedVideoId = null
                         showDialog.value = true
                         confirmAction.value = {
-                            // 「はい」を選択した場合、画像IDだけを保存
-                            saveSelectedImage(selectedImageId)
+                            saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId)
+                            showDialog.value = false
+                        }
+                    }
+                )
+                //動画の例
+                Image(
+                    painter = painterResource(id = R.drawable.face_tracking),
+                    contentDescription = "Character face_tracking",
+                    modifier = Modifier.clickable {
+                        selectedImageId = R.drawable.face_tracking
+                        selectedSoundId = null
+                        selectedVideoId = R.raw.face_traking
+                        showDialog.value = true
+                        confirmAction.value = {
+                            saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId)
                             showDialog.value = false
                         }
                     }
                 )
             }
 
-            // ダイアログを表示
+            // 確認ダイアログ
             if (showDialog.value) {
                 AlertDialog(
                     onDismissRequest = { showDialog.value = false },
                     title = { androidx.compose.material3.Text("この画像にしますか？") },
-                    confirmButton = {
-                        Button(onClick = {
-                            // 「はい」を選択した場合、画像IDを保存してダイアログを閉じる
-                            confirmAction.value.invoke()
-                        }) {
+                    dismissButton = {
+                        Button(onClick = confirmAction.value) {
                             androidx.compose.material3.Text("はい")
                         }
                     },
-                    dismissButton = {
-                        Button(onClick = {
-                            // 「いいえ」を選択した場合、ダイアログを閉じる
-                            showDialog.value = false
-                        }) {
+                    confirmButton = {
+                        Button(onClick = { showDialog.value = false }) {
                             androidx.compose.material3.Text("いいえ")
                         }
                     }
@@ -132,11 +160,31 @@ class CharacterScreen : AppCompatActivity() {
         }
     }
 
-    // 画像IDを保存する関数
-    private fun saveSelectedImage(imageId: Int?) {
+    // 画像ID、音声ID、動画IDを保存する関数
+    private fun saveSelectedContent(imageId: Int?, soundId: Int?, videoId: Int?) {
         val sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE)
         val editor = sharedPref.edit()
-        editor.putInt("selectedImage", imageId ?: R.drawable.character1)  // デフォルト値を指定
+        editor.putInt("selectedImage", imageId ?: R.drawable.character1) // デフォルト画像
+        editor.putInt("selectedSound", soundId ?: R.raw.one_up) // デフォルト音声
+        editor.putInt("selectedVideo", videoId ?: -1) // デフォルト動画
         editor.apply()
+    }
+
+    // SharedPreferencesから画像IDを取得
+    private fun getSelectedImageFromPreferences(): Int {
+        val sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE)
+        return sharedPref.getInt("selectedImage", R.drawable.character1)
+    }
+
+    // SharedPreferencesから音声IDを取得
+    private fun getSelectedSoundFromPreferences(): Int {
+        val sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE)
+        return sharedPref.getInt("selectedSound", R.raw.one_up)
+    }
+
+    // SharedPreferencesから動画IDを取得
+    private fun getSelectedVideoFromPreferences(): Int {
+        val sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE)
+        return sharedPref.getInt("selectedVideo", -1)
     }
 }
