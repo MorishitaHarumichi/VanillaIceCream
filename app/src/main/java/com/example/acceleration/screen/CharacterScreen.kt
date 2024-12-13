@@ -26,6 +26,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.painterResource
 import com.example.acceleration.R
 import com.example.acceleration.ui.theme.AccelerationTheme
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.unit.dp
 
 class CharacterScreen : AppCompatActivity() {
 
@@ -59,6 +63,8 @@ class CharacterScreen : AppCompatActivity() {
             selectedVideoId = savedVideoId
         }
 
+        val scrollState = rememberScrollState()
+
         Box(modifier = Modifier.fillMaxSize()) {
             // 戻るボタン（左上に配置）
             IconButton(
@@ -74,15 +80,20 @@ class CharacterScreen : AppCompatActivity() {
             }
 
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(scrollState), // スクロール可能にする
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.spacedBy(16.dp) // 各画像の間隔を設定
             ) {
-                // 画像と音声のセット
+                val imageModifier = Modifier
+                    .fillMaxWidth(0.8f) // 幅を画面の80%に調整
+                    .aspectRatio(1f) // 正方形にする
+
                 Image(
                     painter = painterResource(id = R.drawable.character1), // CharacterScreenで表示される画像
                     contentDescription = "Character 1",
-                    modifier = Modifier.clickable {
+                    modifier = imageModifier.clickable {
                         selectedImageId = R.drawable.character1 //画像
                         selectedSoundId = R.raw.a_n //音声
                         selectedVideoId = null // 動画(このイメージでは使用しない)
@@ -97,7 +108,7 @@ class CharacterScreen : AppCompatActivity() {
                 Image(
                     painter = painterResource(id = R.drawable.character2),
                     contentDescription = "Character 2",
-                    modifier = Modifier.clickable {
+                    modifier = imageModifier.clickable {
                         selectedImageId = R.drawable.character2
                         selectedSoundId = R.raw.deeeen
                         selectedVideoId = null
@@ -112,7 +123,7 @@ class CharacterScreen : AppCompatActivity() {
                 Image(
                     painter = painterResource(id = R.drawable.character3),
                     contentDescription = "Character 3",
-                    modifier = Modifier.clickable {
+                    modifier = imageModifier.clickable {
                         selectedImageId = R.drawable.character3
                         selectedSoundId = R.raw.one_up
                         selectedVideoId = null
@@ -123,11 +134,11 @@ class CharacterScreen : AppCompatActivity() {
                         }
                     }
                 )
-                //動画の例
+
                 Image(
                     painter = painterResource(id = R.drawable.face_tracking),
                     contentDescription = "Character face_tracking",
-                    modifier = Modifier.clickable {
+                    modifier = imageModifier.clickable {
                         selectedImageId = R.drawable.face_tracking
                         selectedSoundId = null
                         selectedVideoId = R.raw.face_traking
