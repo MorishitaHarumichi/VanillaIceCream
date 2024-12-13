@@ -8,6 +8,8 @@ import android.os.Build
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.view.SurfaceHolder
+import android.view.SurfaceView
 import android.widget.VideoView
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -24,7 +26,8 @@ import com.example.acceleration.ui.theme.AccelerationTheme
 class PreviewScreen : AppCompatActivity() {
 
     private var mediaPlayer: MediaPlayer? = null  // MediaPlayerを管理する変数
-    private var videoView: VideoView? = null      // VideoViewを管理する変数
+    private var surfaceView: SurfaceView? = null // SurfaceViewの管理変数
+    private lateinit var surfaceHolder: SurfaceHolder
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,10 +38,22 @@ class PreviewScreen : AppCompatActivity() {
         val vibrationDuration = getVibrationDurationFromPreferences()
 
         if (selectedVideo != -1) {
-            // 動画IDがある場合、動画を再生
+            // 動画IDがある場合、SurfaceViewを利用して動画を再生
             setContentView(R.layout.activity_screen_flash)
-            videoView = findViewById(R.id.videoView)
-            playVideo(selectedVideo)
+            surfaceView = findViewById(R.id.surfaceView)
+            surfaceHolder = surfaceView!!.holder
+
+            surfaceHolder.addCallback(object : SurfaceHolder.Callback {
+                override fun surfaceCreated(holder: SurfaceHolder) {
+                    playVideo(selectedVideo)
+                }
+
+                override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {}
+                override fun surfaceDestroyed(holder: SurfaceHolder) {
+                    mediaPlayer?.release()
+                    mediaPlayer = null
+                }
+            })
 
         } else {
             // 動画がない場合、画像と音声を表示
@@ -59,11 +74,23 @@ class PreviewScreen : AppCompatActivity() {
             playVibration(vibrationDuration)
 
             android.util.Log.d("FlashScreen", "Vibration Duration: $vibrationDuration")
-
         }
     }
 
-
+    // 動画の再生処理
+    private fun playVideo(videoResId: Int) {
+        val videoUri = Uri.parse("android.resource://$packageName/$videoResId")
+        mediaPlayer = MediaPlayer().apply {
+            setDataSource(this@PreviewScreen, videoUri)
+            setDisplay(surfaceHolder) // SurfaceViewに動画を表示
+            isLooping = true          // 動画をループ再生
+            setOnPreparedListener { mp ->
+                mp.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT)
+                mp.start()
+            }
+            prepareAsync()
+        }
+    }
 
     // 音声の再生処理
     private fun playSoundDelayed(soundId: Int) {
@@ -74,27 +101,12 @@ class PreviewScreen : AppCompatActivity() {
         }
     }
 
-    // 動画の再生処理（ループ再生）
-    private fun playVideo(videoResId: Int) {
-        val videoUri = Uri.parse("android.resource://$packageName/$videoResId")
-        videoView?.setVideoURI(videoUri)
-
-        videoView?.setOnPreparedListener { it.start() }
-
-        // ループ再生の設定
-        videoView?.setOnCompletionListener {
-            videoView?.start() // 再生が終わったら最初から再生
-        }
-    }
-
-
     @Composable
     fun FlashScreenContent(onBack: () -> Unit, selectedImage: Int) {
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-
             Image(
                 painter = painterResource(id = selectedImage),
                 contentDescription = "selectedImage",
@@ -139,4 +151,5 @@ class PreviewScreen : AppCompatActivity() {
         mediaPlayer = null
     }
 }
+
 

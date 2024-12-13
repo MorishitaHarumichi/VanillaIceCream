@@ -3,12 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- 動画を表示するVideoView -->
-    <VideoView
-        android:id="@+id/videoView"
+    <!-- 動画を表示するsurfaceView -->
+    <SurfaceView
+        android:id="@+id/surfaceView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
         android:layout_centerInParent="true" />
 
 </RelativeLayout>
