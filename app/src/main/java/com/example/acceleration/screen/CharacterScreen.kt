@@ -24,6 +24,7 @@ import com.example.acceleration.ui.theme.AccelerationTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 
 class CharacterScreen : AppCompatActivity() {
@@ -73,59 +74,62 @@ class CharacterScreen : AppCompatActivity() {
                     .fillMaxWidth(0.8f) // 幅を画面の80%に調整
                     .aspectRatio(1f) // 正方形にする
 
+                //動画zoi
                 Image(
-                    painter = painterResource(id = R.drawable.character1), // CharacterScreenで表示される画像
-                    contentDescription = "Character 1",
-                    modifier = imageModifier.clickable {
-                        selectedImageId = R.drawable.character1 //画像
-                        selectedSoundId = R.raw.a_n //音声
-                        selectedVideoId = null // 動画(このイメージでは使用しない)
-                        showDialog.value = true
-                        confirmAction.value = {
-                            saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, vibrationDuration = 10L)
-                            showDialog.value = false
-                        }
-                    }
-                )
-
-                Image(
-                    painter = painterResource(id = R.drawable.character2),
-                    contentDescription = "Character 2",
-                    modifier = imageModifier.clickable {
-                        selectedImageId = R.drawable.character2
-                        selectedSoundId = R.raw.deeeen
-                        selectedVideoId = null
-                        showDialog.value = true
-                        confirmAction.value = {
-                            saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, vibrationDuration = 100L)
-                            showDialog.value = false
-                        }
-                    }
-                )
-
-                Image(
-                    painter = painterResource(id = R.drawable.character3),
-                    contentDescription = "Character 3",
-                    modifier = imageModifier.clickable {
-                        selectedImageId = R.drawable.character3
-                        selectedSoundId = R.raw.one_up
-                        selectedVideoId = null
-                        showDialog.value = true
-                        confirmAction.value = {
-                            saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, vibrationDuration = 1000L)
-                            showDialog.value = false
-                        }
-                    }
-                )
-
-                //動画の場合
-                Image(
-                    painter = painterResource(id = R.drawable.face_tracking),
+                    painter = painterResource(id = R.drawable.kao1),
                     contentDescription = "Character face_tracking",
                     modifier = imageModifier.clickable {
-                        selectedImageId = R.drawable.face_tracking
+                        selectedImageId = R.drawable.kao1
                         selectedSoundId = null
-                        selectedVideoId = R.raw.face_traking
+                        selectedVideoId = R.raw.kao1v
+                        showDialog.value = true
+                        confirmAction.value = {
+                            saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, 0)
+                            showDialog.value = false
+                        }
+                    }
+                )
+
+                //動画zoi
+                Image(
+                    painter = painterResource(id = R.drawable.kao2),
+                    contentDescription = "Character face_tracking",
+                    modifier = imageModifier.clickable {
+                        selectedImageId = R.drawable.kao2
+                        selectedSoundId = null
+                        selectedVideoId = R.raw.kao2v
+                        showDialog.value = true
+                        confirmAction.value = {
+                            saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, 0)
+                            showDialog.value = false
+                        }
+                    }
+                )
+
+                //動画zoi
+                Image(
+                    painter = painterResource(id = R.drawable.kao3),
+                    contentDescription = "Character face_tracking",
+                    modifier = imageModifier.clickable {
+                        selectedImageId = R.drawable.kao3
+                        selectedSoundId = null
+                        selectedVideoId = R.raw.kao3v
+                        showDialog.value = true
+                        confirmAction.value = {
+                            saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, 0)
+                            showDialog.value = false
+                        }
+                    }
+                )
+
+                //動画zoi
+                Image(
+                    painter = painterResource(id = R.drawable.kao4),
+                    contentDescription = "Character face_tracking",
+                    modifier = imageModifier.clickable {
+                        selectedImageId = R.drawable.kao4
+                        selectedSoundId = null
+                        selectedVideoId = R.raw.kao4v
                         showDialog.value = true
                         confirmAction.value = {
                             saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, 0)
