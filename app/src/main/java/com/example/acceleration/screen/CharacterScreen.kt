@@ -1,5 +1,6 @@
 package com.example.acceleration.screen
 
+import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -63,80 +64,90 @@ class CharacterScreen : AppCompatActivity() {
 
         Box(modifier = Modifier.fillMaxSize()) {
 
+            // 画像を2列に並べてスクロールできるようにする
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .verticalScroll(scrollState), // スクロール可能にする
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp) // 各画像の間隔を設定
+                    .verticalScroll(scrollState) // スクロール可能にする
+                    .padding(0.dp) // Columnの周囲の余白を追加
             ) {
                 val imageModifier = Modifier
-                    .fillMaxWidth(0.8f) // 幅を画面の80%に調整
-                    .aspectRatio(1f) // 正方形にする
+                    .aspectRatio(0.5f) // 正方形にする　サイズの変更
+                    .padding(0.dp) // 画像間の余白を均等に設定
 
-                //動画zoi
-                Image(
-                    painter = painterResource(id = R.drawable.kao1),
-                    contentDescription = "Character face_tracking",
-                    modifier = imageModifier.clickable {
-                        selectedImageId = R.drawable.kao1
-                        selectedSoundId = null
-                        selectedVideoId = R.raw.kao1v
-                        showDialog.value = true
-                        confirmAction.value = {
-                            saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, 0)
-                            showDialog.value = false
+                // 2つの画像を横に並べるRow
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(-7.dp), // 画像間の間隔
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.kao1),
+                        contentDescription = "Character face_tracking",
+                        modifier = imageModifier.then(Modifier.weight(1f)).clickable {
+                            selectedImageId = R.drawable.kao1
+                            selectedSoundId = null
+                            selectedVideoId = R.raw.kao1v
+                            showDialog.value = true
+                            confirmAction.value = {
+                                saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, 0)
+                                showDialog.value = false
+                            }
                         }
-                    }
-                )
+                    )
 
-                //動画zoi
-                Image(
-                    painter = painterResource(id = R.drawable.kao2),
-                    contentDescription = "Character face_tracking",
-                    modifier = imageModifier.clickable {
-                        selectedImageId = R.drawable.kao2
-                        selectedSoundId = null
-                        selectedVideoId = R.raw.kao2v
-                        showDialog.value = true
-                        confirmAction.value = {
-                            saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, 0)
-                            showDialog.value = false
+                    Image(
+                        painter = painterResource(id = R.drawable.kao2),
+                        contentDescription = "Character face_tracking",
+                        modifier = imageModifier.then(Modifier.weight(1f)).clickable {
+                            selectedImageId = R.drawable.kao2
+                            selectedSoundId = null
+                            selectedVideoId = R.raw.kao2v
+                            showDialog.value = true
+                            confirmAction.value = {
+                                saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, 0)
+                                showDialog.value = false
+                            }
                         }
-                    }
-                )
+                    )
+                }
 
-                //動画zoi
-                Image(
-                    painter = painterResource(id = R.drawable.kao3),
-                    contentDescription = "Character face_tracking",
-                    modifier = imageModifier.clickable {
-                        selectedImageId = R.drawable.kao3
-                        selectedSoundId = null
-                        selectedVideoId = R.raw.kao3v
-                        showDialog.value = true
-                        confirmAction.value = {
-                            saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, 0)
-                            showDialog.value = false
+                // もう一組の2つの画像を横に並べるRow
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(-7.dp), // 画像間の間隔
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.kao3),
+                        contentDescription = "Character face_tracking",
+                        modifier = imageModifier.then(Modifier.weight(1f)).clickable {
+                            selectedImageId = R.drawable.kao3
+                            selectedSoundId = null
+                            selectedVideoId = R.raw.kao3v
+                            showDialog.value = true
+                            confirmAction.value = {
+                                saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, 0)
+                                showDialog.value = false
+                            }
                         }
-                    }
-                )
+                    )
 
-                //動画zoi
-                Image(
-                    painter = painterResource(id = R.drawable.kao4),
-                    contentDescription = "Character face_tracking",
-                    modifier = imageModifier.clickable {
-                        selectedImageId = R.drawable.kao4
-                        selectedSoundId = null
-                        selectedVideoId = R.raw.kao4v
-                        showDialog.value = true
-                        confirmAction.value = {
-                            saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, 0)
-                            showDialog.value = false
+                    Image(
+                        painter = painterResource(id = R.drawable.kao4),
+                        contentDescription = "Character face_tracking",
+                        modifier = imageModifier.then(Modifier.weight(1f)).clickable {
+                            selectedImageId = R.drawable.kao4
+                            selectedSoundId = null
+                            selectedVideoId = R.raw.kao4v
+                            showDialog.value = true
+                            confirmAction.value = {
+                                saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, 0)
+                                showDialog.value = false
+                            }
                         }
-                    }
-                )
+                    )
+                }
             }
 
             // 確認ダイアログ
@@ -158,6 +169,9 @@ class CharacterScreen : AppCompatActivity() {
             }
         }
     }
+
+
+
 
     // 画像ID、音声ID、動画ID、バイブレーションの周期を保存する関数
     private fun saveSelectedContent(imageId: Int?, soundId: Int?, videoId: Int?, vibrationDuration: Long) {
