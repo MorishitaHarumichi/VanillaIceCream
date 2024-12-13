@@ -21,12 +21,12 @@ class TitleScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            TitleScreen()
+            DisplayTitleScreen() // メソッド名を変更
         }
     }
 
     @Composable
-    fun TitleScreen() {
+    fun DisplayTitleScreen() { // メソッド名を変更
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
