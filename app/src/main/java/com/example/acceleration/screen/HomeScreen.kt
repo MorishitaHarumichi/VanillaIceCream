@@ -8,20 +8,26 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -30,7 +36,7 @@ import com.example.acceleration.ui.theme.AccelerationTheme
 
 class HomeScreen : AppCompatActivity() {
 
-    private var savedImageId by mutableStateOf(R.drawable.character1) // State管理
+    private var savedImageId by mutableIntStateOf(R.drawable.character1) // State管理
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,36 +83,65 @@ class HomeScreen : AppCompatActivity() {
         }
 
         Box(modifier = Modifier.fillMaxSize()) {
-            // 背景画像を設定
+            // 画像を背景として配置
             Image(
-                painter = painterResource(id = savedImageId),
-                contentDescription = "Selected Background",
-                modifier = Modifier.fillMaxSize()
+                painter = painterResource(id = savedImageId), // 仮の顔
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxSize(), // 画像のサイズ
+                contentScale = ContentScale.FillBounds // 画像の表示形式
             )
 
+            // ボタンを画像の上に配置
             Column(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 12.dp),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.End
             ) {
+                Spacer(modifier = Modifier.height(64.dp))
+
+                // 設定アイコンボタン
                 Button(
                     onClick = {
-                        val intent = Intent(this@HomeScreen, FlashScreen::class.java)
-                        startActivity(intent)
-                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+                        // "CharacterScreen"へ遷移するためのIntent
+                        val intent = Intent(context, CharacterScreen::class.java)
+                        context.startActivity(intent)
                     },
-                    modifier = Modifier.padding(16.dp)
+                    shape = CircleShape, // 円形にする
+                    contentPadding = PaddingValues(0.dp)
                 ) {
-                    Text("FlashScreenに遷移")
+                    Image(
+                        painter = painterResource(id = R.drawable.setting), // 設定アイコン
+                        contentDescription = "Settings",
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .size(58.dp), // 画像のサイズ
+                        contentScale = ContentScale.Crop // 画像の表示形式
+                    )
                 }
 
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // プレビューアイコンボタン
                 Button(
                     onClick = {
-                        val intent = Intent(this@HomeScreen, CharacterScreen::class.java)
-                        startActivity(intent)
-                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+                        // "PreviewScreen"へ遷移するためのIntent
+                        val intent = Intent(context, PreviewScreen::class.java)
+                        context.startActivity(intent)
                     },
-                    modifier = Modifier.padding(16.dp)
+                    shape = CircleShape, // 円形にする
+                    contentPadding = PaddingValues(0.dp)
                 ) {
-                    Text("CharacterScreenに遷移")
+                    Image(
+                        painter = painterResource(id = R.drawable.face), // 顔のアイコン
+                        contentDescription = "Preview",
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .size(58.dp), // 画像のサイズ
+                        contentScale = ContentScale.Crop // 画像の表示形式
+                    )
                 }
             }
         }
@@ -117,4 +152,3 @@ class HomeScreen : AppCompatActivity() {
         return sharedPref.getInt("selectedImage", R.drawable.character1)
     }
 }
-

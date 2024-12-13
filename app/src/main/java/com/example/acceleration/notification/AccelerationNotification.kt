@@ -8,7 +8,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
-import com.example.acceleration.screen.FlashScreen
+import com.example.acceleration.screen.PreviewScreen
 
 class AccelerationNotification(private val context: Context) {
 
@@ -27,9 +27,9 @@ class AccelerationNotification(private val context: Context) {
     }
 
     fun showNotification(acceleration: Float) {
-        val intent = Intent(context, FlashScreen::class.java)
+        val intent = Intent(context, PreviewScreen::class.java)
         val stackBuilder = TaskStackBuilder.create(context)
-        stackBuilder.addParentStack(FlashScreen::class.java)
+        stackBuilder.addParentStack(PreviewScreen::class.java)
         stackBuilder.addNextIntent(intent)
 
         val pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_IMMUTABLE)

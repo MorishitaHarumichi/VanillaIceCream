@@ -7,13 +7,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import com.example.acceleration.screen.HomeScreen
+import com.example.acceleration.screen.TitleScreen
 import com.example.acceleration.workmanager.AccelerometerWorker
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val intent = Intent(this, HomeScreen::class.java)
+        val intent = Intent(this, TitleScreen::class.java)
         startActivity(intent)
         finish()
 

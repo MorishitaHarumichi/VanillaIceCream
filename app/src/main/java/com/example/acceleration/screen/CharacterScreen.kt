@@ -125,7 +125,7 @@ class CharacterScreen : AppCompatActivity() {
                     modifier = imageModifier.clickable {
                         selectedImageId = R.drawable.face_tracking
                         selectedSoundId = null
-                        selectedVideoId = R.raw.angry_orange
+                        selectedVideoId = R.raw.face_traking
                         showDialog.value = true
                         confirmAction.value = {
                             saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, 0)

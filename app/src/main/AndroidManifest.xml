@@ -34,11 +34,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".screen.FlashScreen"
+            android:name=".screen.PreviewScreen"
             android:exported="true"
             android:theme="@style/Theme.Acceleration.NoActionBar"></activity>
         <activity android:name=".screen.HomeScreen"></activity>
         <activity android:name=".screen.CharacterScreen"></activity>
+        <activity android:name=".screen.TitleScreen"></activity>
+
 
         <service
             android:name=".service.ForegroundNotificationService"
