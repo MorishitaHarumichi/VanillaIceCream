@@ -42,14 +42,6 @@ class FlashScreen : AppCompatActivity() {
             videoView = findViewById(R.id.videoView)
             playVideo(selectedVideo)
 
-            // 戻るボタンの処理を追加
-            val backButton: ImageButton = findViewById(R.id.btnBack)
-            backButton.setOnClickListener {
-                val intent = Intent(this, HomeScreen::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                startActivity(intent)
-                finish()
-            }
         } else {
             // 動画がない場合、画像と音声を表示
             setContent {

@@ -1,6 +1,5 @@
 package com.example.acceleration.screen
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -11,12 +10,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -66,18 +61,6 @@ class CharacterScreen : AppCompatActivity() {
         val scrollState = rememberScrollState()
 
         Box(modifier = Modifier.fillMaxSize()) {
-            // 戻るボタン（左上に配置）
-            IconButton(
-                onClick = {
-                    val intent = Intent(this@CharacterScreen, HomeScreen::class.java)
-                    startActivity(intent)
-                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
-                    finish()
-                },
-                modifier = Modifier.align(Alignment.TopStart)
-            ) {
-                Icon(Icons.Filled.ArrowBack, contentDescription = "戻る")
-            }
 
             Column(
                 modifier = Modifier

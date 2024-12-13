@@ -1,12 +1,10 @@
 package com.example.acceleration.screen
 
-
-import android.app.NotificationManager
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
@@ -17,17 +15,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.acceleration.R
 import com.example.acceleration.ui.theme.AccelerationTheme
 
 class HomeScreen : AppCompatActivity() {
+
+    private var savedImageId by mutableStateOf(R.drawable.character1) // State管理
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,12 +57,23 @@ class HomeScreen : AppCompatActivity() {
 
     @Composable
     fun HomeScreenContent() {
-        // SharedPreferencesから選択されたコンテンツを読み込む
-        val savedImageId = remember { getSelectedImageFromPreferences() }
+        // SharedPreferencesから画像IDを即座に監視して反映
+        savedImageId = getSelectedImageFromPreferences()
 
-        // LaunchedEffectで選択された設定を即時反映
-        LaunchedEffect(savedImageId) {
-            // 設定が変わったらUIが自動的に更新される
+        val context = LocalContext.current
+
+        DisposableEffect(Unit) {
+            val prefs = context.getSharedPreferences("AppPrefs", MODE_PRIVATE)
+            val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+                if (key == "selectedImage") {
+                    savedImageId = getSelectedImageFromPreferences()
+                }
+            }
+            prefs.registerOnSharedPreferenceChangeListener(listener)
+
+            onDispose {
+                prefs.unregisterOnSharedPreferenceChangeListener(listener)
+            }
         }
 
         Box(modifier = Modifier.fillMaxSize()) {
@@ -70,7 +84,6 @@ class HomeScreen : AppCompatActivity() {
                 modifier = Modifier.fillMaxSize()
             )
 
-            // ボタンの配置
             Column(
                 modifier = Modifier.fillMaxSize()
             ) {
@@ -99,9 +112,9 @@ class HomeScreen : AppCompatActivity() {
         }
     }
 
-    // SharedPreferencesから画像IDを取得
     private fun getSelectedImageFromPreferences(): Int {
         val sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE)
         return sharedPref.getInt("selectedImage", R.drawable.character1)
     }
 }
+

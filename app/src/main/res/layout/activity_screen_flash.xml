@@ -10,15 +10,4 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true" />
 
-    <!-- 戻るボタン -->
-    <ImageButton
-        android:id="@+id/btnBack"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_margin="16dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="戻る"
-        android:src="@drawable/outline_arrow_back_ios_new_24" />
 </RelativeLayout>
