@@ -53,6 +53,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview:1.5.0")
     implementation(libs.androidx.material3)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.media3.common.ktx)
     testImplementation(libs.junit)
     implementation("androidx.work:work-runtime:2.7.1")
     implementation("androidx.core:core-ktx:1.8.0")

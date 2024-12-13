@@ -82,7 +82,7 @@ class CharacterScreen : AppCompatActivity() {
                         selectedVideoId = null // 動画(このイメージでは使用しない)
                         showDialog.value = true
                         confirmAction.value = {
-                            saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId)
+                            saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, vibrationDuration = 10L)
                             showDialog.value = false
                         }
                     }
@@ -97,7 +97,7 @@ class CharacterScreen : AppCompatActivity() {
                         selectedVideoId = null
                         showDialog.value = true
                         confirmAction.value = {
-                            saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId)
+                            saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, vibrationDuration = 100L)
                             showDialog.value = false
                         }
                     }
@@ -112,22 +112,23 @@ class CharacterScreen : AppCompatActivity() {
                         selectedVideoId = null
                         showDialog.value = true
                         confirmAction.value = {
-                            saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId)
+                            saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, vibrationDuration = 1000L)
                             showDialog.value = false
                         }
                     }
                 )
 
+                //動画の場合
                 Image(
                     painter = painterResource(id = R.drawable.face_tracking),
                     contentDescription = "Character face_tracking",
                     modifier = imageModifier.clickable {
                         selectedImageId = R.drawable.face_tracking
                         selectedSoundId = null
-                        selectedVideoId = R.raw.face_traking
+                        selectedVideoId = R.raw.angry_orange
                         showDialog.value = true
                         confirmAction.value = {
-                            saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId)
+                            saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, 0)
                             showDialog.value = false
                         }
                     }
@@ -154,13 +155,14 @@ class CharacterScreen : AppCompatActivity() {
         }
     }
 
-    // 画像ID、音声ID、動画IDを保存する関数
-    private fun saveSelectedContent(imageId: Int?, soundId: Int?, videoId: Int?) {
+    // 画像ID、音声ID、動画ID、バイブレーションの周期を保存する関数
+    private fun saveSelectedContent(imageId: Int?, soundId: Int?, videoId: Int?, vibrationDuration: Long) {
         val sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE)
         val editor = sharedPref.edit()
         editor.putInt("selectedImage", imageId ?: R.drawable.character1) // デフォルト画像
         editor.putInt("selectedSound", soundId ?: R.raw.one_up) // デフォルト音声
         editor.putInt("selectedVideo", videoId ?: -1) // デフォルト動画
+        editor.putLong("vibrationDuration", vibrationDuration) //バイブレーション処理
         editor.apply()
     }
 

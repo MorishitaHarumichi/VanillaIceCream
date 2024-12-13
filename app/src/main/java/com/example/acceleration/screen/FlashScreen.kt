@@ -1,26 +1,23 @@
 package com.example.acceleration.screen
 
+import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import android.widget.ImageButton
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.widget.VideoView
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import com.example.acceleration.R
 import com.example.acceleration.ui.theme.AccelerationTheme
 
@@ -35,6 +32,7 @@ class FlashScreen : AppCompatActivity() {
         val selectedImage = getSelectedImageFromPreferences()
         val selectedSound = getSelectedSoundFromPreferences()
         val selectedVideo = getSelectedVideoFromPreferences()
+        val vibrationDuration = getVibrationDurationFromPreferences()
 
         if (selectedVideo != -1) {
             // 動画IDがある場合、動画を再生
@@ -58,8 +56,13 @@ class FlashScreen : AppCompatActivity() {
                 }
             }
             playSoundDelayed(selectedSound)
+            playVibration(vibrationDuration)
+
+            android.util.Log.d("FlashScreen", "Vibration Duration: $vibrationDuration")
+
         }
     }
+
 
 
     // 音声の再生処理
@@ -71,15 +74,19 @@ class FlashScreen : AppCompatActivity() {
         }
     }
 
-    // 動画の再生処理
+    // 動画の再生処理（ループ再生）
     private fun playVideo(videoResId: Int) {
         val videoUri = Uri.parse("android.resource://$packageName/$videoResId")
         videoView?.setVideoURI(videoUri)
+
         videoView?.setOnPreparedListener { it.start() }
+
+        // ループ再生の設定
         videoView?.setOnCompletionListener {
-            finish() // 動画終了後に画面を閉じる
+            videoView?.start() // 再生が終わったら最初から再生
         }
     }
+
 
     @Composable
     fun FlashScreenContent(onBack: () -> Unit, selectedImage: Int) {
@@ -87,16 +94,6 @@ class FlashScreen : AppCompatActivity() {
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            // 戻るボタン
-            IconButton(
-                onClick = onBack,
-                modifier = Modifier
-                    .align(Alignment.TopStart)
-                    .size(48.dp)
-            ) {
-                Icon(Icons.Filled.ArrowBack, contentDescription = "戻る")
-            }
-
 
             Image(
                 painter = painterResource(id = selectedImage),
@@ -121,9 +118,25 @@ class FlashScreen : AppCompatActivity() {
         return sharedPref.getInt("selectedVideo", -1) // デフォルト値は-1
     }
 
+    private fun getVibrationDurationFromPreferences(): Long {
+        val sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE)
+        return sharedPref.getLong("vibrationDuration", 0L) // デフォルトは0ms
+    }
+
+    private fun playVibration(duration: Long) {
+        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(VibrationEffect.createOneShot(duration, VibrationEffect.DEFAULT_AMPLITUDE))
+        } else {
+            @Suppress("DEPRECATION")
+            vibrator.vibrate(duration)
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayer?.release()
         mediaPlayer = null
     }
 }
+
