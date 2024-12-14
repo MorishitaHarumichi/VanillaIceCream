@@ -149,6 +149,41 @@ class CharacterScreen : AppCompatActivity() {
                             }
                         }
                     )
+
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy((-7).dp), // 画像間の間隔
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Image(
+                        painter = painterResource(id = R.drawable.kao5),
+                        contentDescription = "Character face_tracking",
+                        modifier = imageModifier.then(Modifier.weight(1f)).clickable {
+                            selectedImageId = R.drawable.kao5
+                            selectedSoundId = null
+                            selectedVideoId = R.raw.kao5
+                            showDialog.value = true
+                            confirmAction.value = {
+                                saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, 0, R.raw.notification_sound)
+                                showDialog.value = false
+                            }
+                        }
+                    )
+                    Image(
+                        painter = painterResource(id = R.drawable.kao6),
+                        contentDescription = "Character face_tracking",
+                        modifier = imageModifier.then(Modifier.weight(1f)).clickable {
+                            selectedImageId = R.drawable.kao6
+                            selectedSoundId = null
+                            selectedVideoId = R.raw.kao6v
+                            showDialog.value = true
+                            confirmAction.value = {
+                                saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, 0, R.raw.notification_sound3)
+                                showDialog.value = false
+                            }
+                        }
+                    )
                 }
             }
 
@@ -156,7 +191,7 @@ class CharacterScreen : AppCompatActivity() {
             if (showDialog.value) {
                 AlertDialog(
                     onDismissRequest = { showDialog.value = false },
-                    title = { androidx.compose.material3.Text("この画像にしますか？") },
+                    title = { androidx.compose.material3.Text("この顔にしますか？") },
                     dismissButton = {
                         Button(onClick = confirmAction.value) {
                             androidx.compose.material3.Text("はい")

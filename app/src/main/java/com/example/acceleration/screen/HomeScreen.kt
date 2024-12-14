@@ -147,7 +147,7 @@ class HomeScreen : AppCompatActivity() {
         }
     }
 
-    private fun getSelectedImageFromPreferences(): Int {
+   private fun getSelectedImageFromPreferences(): Int {
         val sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE)
         return sharedPref.getInt("selectedImage", R.drawable.kao1)
     }

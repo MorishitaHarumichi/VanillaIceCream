@@ -23,7 +23,7 @@ import androidx.compose.ui.res.painterResource
 import com.example.acceleration.R
 import com.example.acceleration.ui.theme.AccelerationTheme
 
-class PreviewScreen : AppCompatActivity() {
+class  PreviewScreen : AppCompatActivity() {
 
     private var mediaPlayer: MediaPlayer? = null  // MediaPlayerを管理する変数
     private var surfaceView: SurfaceView? = null // SurfaceViewの管理変数
