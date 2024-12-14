@@ -87,7 +87,7 @@ class CharacterScreen : AppCompatActivity() {
                         modifier = imageModifier.then(Modifier.weight(1f)).clickable {
                             selectedImageId = R.drawable.kao1
                             selectedSoundId = null
-                            selectedVideoId = R.raw.kao1v
+                            selectedVideoId = R.raw.kao1vv
                             showDialog.value = true
                             confirmAction.value = {
                                 saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, 0)
