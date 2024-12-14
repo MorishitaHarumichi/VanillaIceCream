@@ -36,7 +36,7 @@ import com.example.acceleration.ui.theme.AccelerationTheme
 
 class HomeScreen : AppCompatActivity() {
 
-    private var savedImageId by mutableIntStateOf(R.drawable.character1) // State管理
+    private var savedImageId by mutableIntStateOf(R.drawable.kao1) // State管理
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,7 +85,7 @@ class HomeScreen : AppCompatActivity() {
         Box(modifier = Modifier.fillMaxSize()) {
             // 画像を背景として配置
             Image(
-                painter = painterResource(id = savedImageId), // 仮の顔
+                painter = painterResource(id = savedImageId), // 初期値の顔
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize(), // 画像のサイズ
@@ -149,6 +149,6 @@ class HomeScreen : AppCompatActivity() {
 
     private fun getSelectedImageFromPreferences(): Int {
         val sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE)
-        return sharedPref.getInt("selectedImage", R.drawable.character1)
+        return sharedPref.getInt("selectedImage", R.drawable.kao1)
     }
 }

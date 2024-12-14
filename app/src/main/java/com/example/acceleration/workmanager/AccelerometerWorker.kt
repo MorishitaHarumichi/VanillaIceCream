@@ -9,7 +9,6 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Build
-import androidx.core.app.NotificationCompat
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import android.util.Log
@@ -26,7 +25,7 @@ class AccelerometerWorker(context: Context, workerParams: WorkerParameters) : Wo
     override fun doWork(): Result {
         // センサー管理者の初期化
         sensorManager = applicationContext.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION)
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
 
         // センサーリスナーの登録
         accelerometer?.let {
@@ -51,7 +50,7 @@ class AccelerometerWorker(context: Context, workerParams: WorkerParameters) : Wo
             // 加速度データをログに出力
             val z = event.values[2]
 
-            if (z < -4.5) {
+            if (z < 7.2) {
                 Log.d("Accelerometer", "z: $z, Sending notification!")
 
                 // 通知の送信

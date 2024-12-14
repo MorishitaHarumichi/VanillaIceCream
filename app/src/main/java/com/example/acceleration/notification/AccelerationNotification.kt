@@ -34,8 +34,15 @@ class AccelerationNotification(private val context: Context) {
         return sharedPref.getInt("notificationSound", R.raw.notification_sound2) // デフォルト通知音
     }
 
+    //
     fun showNotification(acceleration: Float) {
-        val notificationSoundId = getNotificationSoundFromPreferences()
+        // 加速度の値に基づいて通知音を変更
+        val notificationSoundId = when {
+            acceleration <= 0 -> R.raw.notification_sound3 // 強い加速度
+            acceleration <= 3.6  -> R.raw.notification_sound2 // 中程度の加速度
+            else               -> R.raw.custom_notification // 軽い加速度
+        }
+
         val soundUri = Uri.parse("android.resource://${context.packageName}/raw/$notificationSoundId")
         val dynamicChannelId = "acceleration_channel_id_$notificationSoundId" // 動的なチャンネルID
 
@@ -48,7 +55,7 @@ class AccelerationNotification(private val context: Context) {
                 val name = "Acceleration Notifications"
                 val importance = NotificationManager.IMPORTANCE_HIGH
                 val channel = NotificationChannel(dynamicChannelId, name, importance)
-                channel.setSound(soundUri, null)  // ここで通知音を設定
+                channel.setSound(soundUri, null) // 通知音を設定
                 notificationManager.createNotificationChannel(channel)
             }
         }
@@ -57,11 +64,12 @@ class AccelerationNotification(private val context: Context) {
             .setSmallIcon(android.R.drawable.ic_notification_overlay)
             .setContentTitle("ごめんね！")
             .setContentText("タップしてあやまらせる")
-            .setSound(soundUri)  // 通知音を設定
+            .setSound(soundUri) // 通知音を設定
             .setAutoCancel(true)
             .build()
 
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(1, notification)
     }
+
 }

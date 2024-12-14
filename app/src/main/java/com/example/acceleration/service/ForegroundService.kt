@@ -47,7 +47,7 @@ class ForegroundNotificationService : Service() {
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("アプリが実行中です")
             .setContentText("バックグラウンドで動作しています")
-            .setSmallIcon(R.drawable.character1) // アイコンを適切に設定
+            //.setSmallIcon(R.drawable.character1) // アイコンを適切に設定
             .build()
     }
 }

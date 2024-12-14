@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 
 class CharacterScreen : AppCompatActivity() {
 
-    private var selectedImageId: Int? = null
+    private var selectedImageId: Int? = null  // 画像ID
     private var selectedSoundId: Int? = null  // 音声ID
     private var selectedVideoId: Int? = null  // 動画IDを追加
 
@@ -78,7 +78,7 @@ class CharacterScreen : AppCompatActivity() {
                 // 2つの画像を横に並べるRow
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(-7.dp), // 画像間の間隔
+                    horizontalArrangement = Arrangement.spacedBy((-7).dp), // 画像間の間隔
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Image(
@@ -87,7 +87,7 @@ class CharacterScreen : AppCompatActivity() {
                         modifier = imageModifier.then(Modifier.weight(1f)).clickable {
                             selectedImageId = R.drawable.kao1
                             selectedSoundId = null
-                            selectedVideoId = R.raw.kao1vv //そろそろシャワーあびようね
+                            selectedVideoId = R.raw.kao1vv
                             val notificationSoundId = R.raw.custom_notification // 画像に対応する通知音
                             showDialog.value = true
                             confirmAction.value = {
@@ -117,7 +117,7 @@ class CharacterScreen : AppCompatActivity() {
                 // もう一組の2つの画像を横に並べるRow
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(-7.dp), // 画像間の間隔
+                    horizontalArrangement = Arrangement.spacedBy((-7).dp), // 画像間の間隔
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Image(
@@ -185,8 +185,8 @@ class CharacterScreen : AppCompatActivity() {
     ) {
         val sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE)
         val editor = sharedPref.edit()
-        editor.putInt("selectedImage", imageId ?: R.drawable.character1) // デフォルト画像
-        editor.putInt("selectedSound", soundId ?: R.raw.one_up) // デフォルト音声
+        editor.putInt("selectedImage", imageId ?: R.drawable.kao1) // デフォルト画像
+        editor.putInt("selectedSound", soundId ?: R.raw.custom_notification) // デフォルト音声
         editor.putInt("selectedVideo", videoId ?: -1) // デフォルト動画
         editor.putLong("vibrationDuration", vibrationDuration) // バイブレーションの周期
         editor.putInt("notificationSound", notificationSoundId) // 通知音ID
@@ -197,13 +197,13 @@ class CharacterScreen : AppCompatActivity() {
     // SharedPreferencesから画像IDを取得
     private fun getSelectedImageFromPreferences(): Int {
         val sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE)
-        return sharedPref.getInt("selectedImage", R.drawable.character1)
+        return sharedPref.getInt("selectedImage", R.drawable.kao1)
     }
 
     // SharedPreferencesから音声IDを取得
     private fun getSelectedSoundFromPreferences(): Int {
         val sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE)
-        return sharedPref.getInt("selectedSound", R.raw.one_up)
+        return sharedPref.getInt("selectedSound", R.raw.custom_notification)
     }
 
     // SharedPreferencesから動画IDを取得

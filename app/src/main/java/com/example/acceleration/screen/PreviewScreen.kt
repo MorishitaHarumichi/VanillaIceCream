@@ -117,12 +117,12 @@ class PreviewScreen : AppCompatActivity() {
 
     private fun getSelectedImageFromPreferences(): Int {
         val sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE)
-        return sharedPref.getInt("selectedImage", R.drawable.character1)
+        return sharedPref.getInt("selectedImage", R.drawable.kao1)
     }
 
     private fun getSelectedSoundFromPreferences(): Int {
         val sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE)
-        return sharedPref.getInt("selectedSound", R.raw.a_n)
+        return sharedPref.getInt("selectedSound", R.raw.custom_notification)
     }
 
     private fun getSelectedVideoFromPreferences(): Int {
