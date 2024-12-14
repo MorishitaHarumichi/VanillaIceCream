@@ -100,7 +100,7 @@ class HomeScreen : AppCompatActivity() {
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.End
             ) {
-                Spacer(modifier = Modifier.height(64.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
                 // 設定アイコンボタン
                 Button(

@@ -1,5 +1,6 @@
 package com.example.acceleration.workmanager
 
+import AccelerationNotification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -12,7 +13,6 @@ import androidx.core.app.NotificationCompat
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import android.util.Log
-import com.example.acceleration.notification.AccelerationNotification
 
 class AccelerometerWorker(context: Context, workerParams: WorkerParameters) : Worker(context, workerParams), SensorEventListener {
 

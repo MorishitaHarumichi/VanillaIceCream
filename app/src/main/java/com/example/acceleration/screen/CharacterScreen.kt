@@ -87,10 +87,11 @@ class CharacterScreen : AppCompatActivity() {
                         modifier = imageModifier.then(Modifier.weight(1f)).clickable {
                             selectedImageId = R.drawable.kao1
                             selectedSoundId = null
-                            selectedVideoId = R.raw.kao1vv
+                            selectedVideoId = R.raw.kao1vv //そろそろシャワーあびようね
+                            val notificationSoundId = R.raw.custom_notification // 画像に対応する通知音
                             showDialog.value = true
                             confirmAction.value = {
-                                saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, 0)
+                                saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, 0, notificationSoundId)
                                 showDialog.value = false
                             }
                         }
@@ -103,9 +104,10 @@ class CharacterScreen : AppCompatActivity() {
                             selectedImageId = R.drawable.kao2
                             selectedSoundId = null
                             selectedVideoId = R.raw.kao2v
+                            val notificationSoundId = R.raw.notification_sound2 // 画像に対応する通知音
                             showDialog.value = true
                             confirmAction.value = {
-                                saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, 0)
+                                saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, 0, notificationSoundId)
                                 showDialog.value = false
                             }
                         }
@@ -127,7 +129,7 @@ class CharacterScreen : AppCompatActivity() {
                             selectedVideoId = R.raw.kao3v
                             showDialog.value = true
                             confirmAction.value = {
-                                saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, 0)
+                                saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, 0, R.raw.notification_sound)
                                 showDialog.value = false
                             }
                         }
@@ -142,7 +144,7 @@ class CharacterScreen : AppCompatActivity() {
                             selectedVideoId = R.raw.kao4v
                             showDialog.value = true
                             confirmAction.value = {
-                                saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, 0)
+                                saveSelectedContent(selectedImageId, selectedSoundId, selectedVideoId, 0, R.raw.notification_sound3)
                                 showDialog.value = false
                             }
                         }
@@ -173,16 +175,24 @@ class CharacterScreen : AppCompatActivity() {
 
 
 
-    // 画像ID、音声ID、動画ID、バイブレーションの周期を保存する関数
-    private fun saveSelectedContent(imageId: Int?, soundId: Int?, videoId: Int?, vibrationDuration: Long) {
+    // 画像ID、音声ID、動画ID、バイブレーションの周期、および通知音IDを保存する関数
+    private fun saveSelectedContent(
+        imageId: Int?,
+        soundId: Int?,
+        videoId: Int?,
+        vibrationDuration: Long,
+        notificationSoundId: Int
+    ) {
         val sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE)
         val editor = sharedPref.edit()
         editor.putInt("selectedImage", imageId ?: R.drawable.character1) // デフォルト画像
         editor.putInt("selectedSound", soundId ?: R.raw.one_up) // デフォルト音声
         editor.putInt("selectedVideo", videoId ?: -1) // デフォルト動画
-        editor.putLong("vibrationDuration", vibrationDuration) //バイブレーション処理
+        editor.putLong("vibrationDuration", vibrationDuration) // バイブレーションの周期
+        editor.putInt("notificationSound", notificationSoundId) // 通知音ID
         editor.apply()
     }
+
 
     // SharedPreferencesから画像IDを取得
     private fun getSelectedImageFromPreferences(): Int {
@@ -200,5 +210,10 @@ class CharacterScreen : AppCompatActivity() {
     private fun getSelectedVideoFromPreferences(): Int {
         val sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE)
         return sharedPref.getInt("selectedVideo", -1)
+    }
+
+    private fun getNotificationSoundFromPreferences(): Int {
+        val sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE)
+        return sharedPref.getInt("notificationSound", R.raw.notification_sound2) // デフォルト通知音を指定
     }
 }

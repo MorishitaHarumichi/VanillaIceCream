@@ -10,6 +10,7 @@ import com.example.acceleration.screen.HomeScreen
 import com.example.acceleration.screen.TitleScreen
 import com.example.acceleration.workmanager.AccelerometerWorker
 
+
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
